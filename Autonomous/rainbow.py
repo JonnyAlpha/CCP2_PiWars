@@ -1,17 +1,26 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: Latin
+# original code copied from somewhere over the rainbow example code provided by pi wars team
+# 02 Mar 18 16:34
+
 
 # Load library functions we want
 import time
 import os
 import sys
-import ThunderBorg
+import ThunderBorg3
 import io
 import threading
 import picamera
 import picamera.array
-import cv2
+
+# Added 01 Mar 2018 Bill Harvey - Set correct path for cv2
+sys.path.append('/usr/local/lib/python3.5/site-packages')
+
 import numpy
+#import numpy.core.multiarray # Added 01 Mar 2018 Bill Harvey - trying to fix error message
+import cv2
+
 
 print('Libraries loaded')
 
@@ -23,24 +32,25 @@ global processor
 global debug
 global colour
 
+
 running = True
-debug = True
-colour = 'blue'
+debug = False
+colour = 'red'
 
 # Setup the ThunderBorg
-TB = ThunderBorg.ThunderBorg()
+TB = ThunderBorg3.ThunderBorg() # Edited 01 Mar 2018 Bill Harvey - changed ThunderBorg to ThunderBorg3
 # TB.i2cAddress = 0x15                  # Uncomment and change the value if you have changed the board address
 TB.Init()
 if not TB.foundChip:
     boards = ThunderBorg.ScanForThunderBorg()
     if len(boards) == 0:
-        print'No ThunderBorg found, check you are attached :)'
+        print('No ThunderBorg found, check you are attached :)')
     else:
-        print'No ThunderBorg at address %02X, but we did find boards:' % (TB.i2cAddress)
+        print('No ThunderBorg at address %02X, but we did find boards:' % (TB.i2cAddress))
         for board in boards:
-            print'    %02X (%d)' % (board, board)
-        print'If you need to change the IÃÂ²C address change the setup line so it is correct, e.g.'
-        print'TB.i2cAddress = 0x%02X' % (boards[0])
+            print('    %02X (%d)' % (board, board))
+        print('If you need to change the IÃÂ²C address change the setup line so it is correct, e.g.')
+        print('TB.i2cAddress = 0x%02X' % (boards[0]))
     sys.exit()
 TB.SetCommsFailsafe(False)
 
@@ -196,9 +206,8 @@ class StreamProcessor(threading.Thread):
                 print('%.2f, %.2f' % (driveLeft, driveRight))
         else:
             print('No ball')
-
-	TB.SetMotor1(driveLeft)
-	TB.SetMotor2(driveRight)
+        TB.SetMotor1(driveLeft)
+        TB.SetMotor2(driveRight)
 
 # Image capture thread
 class ImageCapture(threading.Thread):
