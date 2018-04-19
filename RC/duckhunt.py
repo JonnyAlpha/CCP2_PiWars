@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: Latin-1
 
+# duckhunt.py
 # Amended for Python 3 and PS3 SHAWAN controller mapping
 # Amended to add servo control for Duck Shoot
 # Bill Harvey April 2018
