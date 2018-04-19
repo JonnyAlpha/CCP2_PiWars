@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # coding: Latin-1
 
-# duckhunt.py
 # Amended for Python 3 and PS3 SHAWAN controller mapping
-# Amended to add servo control for Duck Shoot
+# Amended to add servo control for Nerf Gun Mount and Fire Button
+# Fire = X button
+# Gun Up / Down, Left / Righ = Right Joystick  
 # Bill Harvey April 2018
 
 # Load library functions we want
@@ -56,7 +57,9 @@ buttonSlow = 5                          # Joystick button number for driving slo
 slowFactor = 0.75                        # Speed to slow to when the drive slowly button is held, e.g. 0.5 would be half speed
 buttonFastTurn = 7                      # Joystick button number for turning fast (R2)
 interval = 0.00                         # Time between updates in seconds, smaller responds faster but uses more processor time
-fire = 0
+fire = 0                                # Button assigned to fire 'X' button
+gun_trajectory = 4                      # Joystick axis to read for gun up / down position                  
+gun_straffe = 3                         # Joystick axis to read for left / right position
 
 # Power settings
 voltageIn = 1.48 * 10                    # Total battery voltage to the ThunderBorg
@@ -147,6 +150,23 @@ try:
                     UB.SetServoPosition3(-1.0)
                     time.sleep(0.5)#insert time for trigger pull and release)
                     UB.SetServoPosition3(0.8)
+                
+                if joystick.get_axis(gun_trajectory):
+                    #Insert gun trajectory servo code here
+                    gunUpDown = joystick.get_axis(gun_trajectory)
+                    print(gunUpDown)
+                    servo2 = gunUpDown
+                    UB.SetServoPosition2(servo2)
+                
+                if joystick.get_axis(gun_straffe):
+                    #Insert gun straffe servo code here
+                    gunLeftRight = joystick.get_axis(gun_straffe)
+                    print(gunLeftRight)
+                    servo1 = gunLeftRight
+                    UB.SetServoPosition1(servo1)
+                    
+                    
+                
                 # Read axis positions (-1 to +1)
                 if axisUpDownInverted:
                     upDown = -joystick.get_axis(axisUpDown)
